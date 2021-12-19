@@ -12,8 +12,8 @@ class DiGraph(GraphInterface, ABC):
         self.mC = 0
 
     def __repr__(self):
-        return 'Nodes:(x=%s)' % self.list_Of_Nodes.keys() + \
-               'Edges:(x=%s)' % self.list_of_Edge_Src
+        return 'Nodes:(%s)' % self.list_Of_Nodes.keys() + \
+               'Edges:(%s)' % self.list_of_Edge_Src
 
     """
     Returns the number of vertices in this graph.
