@@ -35,17 +35,14 @@ class GraphAlgo(GraphAlgoInterface, ABC):
                     new_Vertices = new_graph["Nodes"]
                     new_Edges = new_graph["Edges"]
                     for v in new_Vertices:
-                        if v["id"] is not None and v["pos"] is not None:
+                        if v["id"] is not None:
                             # need to check if this call to function without the less parameters its ok;
-                            vertex = n(key=v["id"], pos=v["pos"])
-                            self.graph.list_Of_Nodes[vertex.key] = vertex
-                            self.graph.mC = self.graph.mC + 1
+                            key = v["id"]
+                            pos = v["pos"]
+                            self.graph.add_node(key, pos)
                     for v in new_Edges:
                         if v["src"] is not None and v["dest"] is not None and v["w"] is not None:
-                            self.graph.list_of_Edge_Src[v["src"]]["dest"] = v["w"]
-                            self.graph.list_of_Edge_Dest[v["dest"]][v["src"]] = v["w"]
-                            self.graph.size_Of_Edge = self.graph.size_Of_Edge + 1
-                            self.graph.mC = self.graph.mC + 1
+                            self.graph.add_edge(v["src"], v["dest"], v["w"])
                     hasLoaded = True
         except IOError as e:
             print(e)
@@ -60,17 +57,17 @@ class GraphAlgo(GraphAlgoInterface, ABC):
         my_json_graph = dict()
         Nodes = []
         Edges = []
-        for v in self.graph.list_Of_Nodes:
-            node_id = v["key"]
-            node_pos = v["pos"]
+        for v in self.graph.get_all_v().values():
+            node_id = n.get_key(v)
+            node_pos = n.get_pos(v)
             node = {"id": node_id, "pos": node_pos}
             Nodes.append(node)
         for src in self.graph.get_all_v().keys():
             for dest, wight in self.graph.all_out_edges_of_node(src).items():
                 edge = {"src": src,  "dest": dest, "w": wight}
                 Edges.append(edge)
-        my_json_graph["Edges"] = Edges
         my_json_graph["Nodes"] = Nodes
+        my_json_graph["Edges"] = Edges
         try:
             with open(file_name, "w") as file:
                 json.dump(my_json_graph, default=lambda graph: graph.__dict__, indent=4, fp=file)
@@ -98,6 +95,7 @@ class GraphAlgo(GraphAlgoInterface, ABC):
     """
 
     def shortest_path(self, id1: int, id2: int) -> (float, list):
+        self.graph.list_Of_Nodes.get()
         pass
 
     """
