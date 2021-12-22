@@ -11,7 +11,7 @@ class EdgeData:
         return '{"src" =%d,"dest"=%d, "wight"=%s}' % (self.src, self.dest, self.weight)
 
     """
-    Return the EdgeData src
+    Return the EdgeDadggta src
     """
     def get_src(self):
         return self.src
