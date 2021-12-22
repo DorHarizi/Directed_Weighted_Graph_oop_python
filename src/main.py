@@ -1,5 +1,5 @@
-from DiGraph import DiGraph
-from GraphAlgo import GraphAlgo
+from src.My_Graph.DiGraph import DiGraph
+from src.My_Graph.GraphAlgo import GraphAlgo
 
 
 def check():
@@ -44,9 +44,9 @@ def check0():
     print(g.all_in_edges_of_node(1))
     print(g.all_out_edges_of_node(1))
     g_algo = GraphAlgo(g)
-    g_algo.save_to_json(r"C:\Users\dorha\PycharmProjects\Dor_Harizi_2_Year_Ex3_oop_python\src\file.json")
+    # g_algo.save_to_json(r"C:\Users\dorha\PycharmProjects\Directed_Weighted_Graph_oop_python\src\file.json")
     g1_algo = GraphAlgo()
-    g1_algo.load_from_json(r"C:\Users\dorha\PycharmProjects\Dor_Harizi_2_Year_Ex3_oop_python\src\file.json")
+    # g1_algo.load_from_json(r"C:\Users\dorha\PycharmProjects\Directed_Weighted_Graph_oop_python\src\file.json")
     print(g1_algo.graph.get_all_v())
     # print(g_algo.shortest_path(0, 3))
     # g_algo.plot_graph()

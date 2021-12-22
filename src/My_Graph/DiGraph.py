@@ -1,6 +1,6 @@
 from abc import ABC
-from src.NodeData import NodeData
-from src.GraphInterface import GraphInterface
+from src.My_Graph.NodeData import NodeData
+from src.Graph_Interface.GraphInterface import GraphInterface
 
 
 class DiGraph(GraphInterface, ABC):
