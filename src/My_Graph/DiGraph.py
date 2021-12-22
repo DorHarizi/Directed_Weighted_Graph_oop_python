@@ -1,6 +1,7 @@
 from abc import ABC
 from src.My_Graph.NodeData import NodeData
 from src.Graph_Interface.GraphInterface import GraphInterface
+from src.My_Graph.EgaeData import EdgeData
 
 
 class DiGraph(GraphInterface, ABC):
@@ -8,6 +9,7 @@ class DiGraph(GraphInterface, ABC):
         self.list_Of_Nodes = dict()
         self.list_of_Edge_Dest = dict()
         self.list_of_Edge_Src = dict()
+        self.list_of_Edges = dict()
         self.size_Of_Edge = 0
         self.mC = 0
 
@@ -68,6 +70,8 @@ class DiGraph(GraphInterface, ABC):
                         and not self.list_of_Edge_Dest.get(id2).__contains__(id1):
                     self.list_of_Edge_Src[id1][id2] = weight
                     self.list_of_Edge_Dest[id2][id1] = weight
+                    edge_tmp = EdgeData(id1, id2, weight)
+                    self.list_of_Edges[(id1, id2)] = edge_tmp
                     self.mC += 1
                     self.size_Of_Edge += 1
                     return True

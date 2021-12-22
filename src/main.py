@@ -43,11 +43,12 @@ def check0():
     print(g.get_all_v())  # prints a dict with all the graph's vertices.
     print(g.all_in_edges_of_node(1))
     print(g.all_out_edges_of_node(1))
+    print(g.list_of_Edges)
     g_algo = GraphAlgo(g)
     # g_algo.save_to_json(r"C:\Users\dorha\PycharmProjects\Directed_Weighted_Graph_oop_python\src\file.json")
     g1_algo = GraphAlgo()
     # g1_algo.load_from_json(r"C:\Users\dorha\PycharmProjects\Directed_Weighted_Graph_oop_python\src\file.json")
-    print(g1_algo.graph.get_all_v())
+    print(g1_algo.graph.get_all_v().values())
     # print(g_algo.shortest_path(0, 3))
     # g_algo.plot_graph()
 
