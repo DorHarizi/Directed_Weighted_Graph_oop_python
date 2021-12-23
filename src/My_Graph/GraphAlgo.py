@@ -1,4 +1,5 @@
 import json
+import sys
 from abc import ABC
 from typing import List
 from matplotlib import pyplot as pt
@@ -6,6 +7,7 @@ from matplotlib import pyplot as pt
 from src.Graph_Interface.GraphAlgoInterface import GraphAlgoInterface
 from src.My_Graph.DiGraph import DiGraph
 from src.My_Graph.NodeData import NodeData as n
+from src.My_Graph.EdgeData import EdgeData as e
 
 
 class GraphAlgo(GraphAlgoInterface, ABC):
@@ -96,8 +98,60 @@ class GraphAlgo(GraphAlgoInterface, ABC):
     """
 
     def shortest_path(self, id1: int, id2: int) -> (float, list):
-        self.graph.list_Of_Nodes.get()
-        pass
+        if self.graph is None or self.graph.get_all_v(id1) is None or self.graph.get_all_v(id2) is None:
+            return float('inf'), []
+        if id1 == id2:
+            return float('inf'), []
+
+        nodes = self.graph.get_all_v()
+
+        if id1 not in nodes or id2 not in nodes:
+            return float('inf'), []
+
+        for node in nodes:
+            n.set_tag(node, False)
+            n.set_weight(node, sys.maxsize)  # set  weight
+
+        stack = {}  # create a stack  for the node we pass
+        shortest_path = {}  # create a dictionary for path  nodes
+
+        # nodes[id][0]=0
+        n.set_weight(nodes.keys(id1), 0)
+        stack[id1] = 0
+        while len(stack) != 0:
+            min_node = -1
+            min_weight = sys.maxsize
+            for i in stack.keys():
+                if n.get_weight(i) < min_weight:
+                    # if nodes.get(i)[4]<min_weight:
+                    #     min_weight=nodes.get(i)[4]
+                    min_weight == n.get_weight(i)
+                    min_node = i
+
+            if min_node == nodes.get(id2):
+                break
+
+            po = self.graph.get_all_v(min_node)
+            stack.pop(min_node)
+            neighbors = self.graph.all_out_edges_of_node(min_node)
+            for edge in neighbors:
+                if n.get_tag(edge) == False and e.get_weight(edge) + n.get_weight(po) < n.get_weight(node):
+                    # if nodes.get(i)[3]==False and neighbors.get(i) + po < nodes.get(i)[4]:]
+                    n.set_weight(node, (e.get_weight(edge) + e.get_weight(po)))
+                    # nodes.get(i)[3]=neighbors.get(i) + po
+                    shortest_path[edge] = min_node
+                    stack[edge] = neighbors.get(edge)
+                n.set_tag(nodes.get(min_node), True)
+            # nodes.get(min_node)[3]=True
+            if shortest_path.get(id2) is None:  # if we didn't found predecessor to the dest node
+                return float("inf"), []
+
+            path = [
+                id2]  # create a list that illustrate the shortest path and add the last vertex= the dest of the path
+            while id2 != id1:  # while isn't the start of the path
+                id2 = shortest_path.get(id2)  # get the previous vertex that we came from it to the current vertex
+                path.insert(0, id2)  # add it to the top of list
+            return n.get_weight(nodes.get(id2)), path  # return the path
 
     """
     Finds the shortest path that visits all the nodes in the list
@@ -105,7 +159,35 @@ class GraphAlgo(GraphAlgoInterface, ABC):
     """
 
     def TSP(self, node_lst: List[int]) -> (List[int], float):
-        super().TSP(node_lst)
+        start = node_lst[0]
+        mini = sys.maxsize
+        citys = []
+        citys.append(start)
+        weight = 0
+
+        for city in citys:
+
+            n.get_key(neighbors.keys(edge)) != n.get_key(city)
+
+            neighbors = self.graph.all_out_edges_of_node(city)
+
+            for edge in neighbors:
+                if e.get_src(edge) in node_lst and n.get_tag(e.get_src(edge)) == False and e.get_src(
+                        edge) < mini and e.get_src(edge) != n.get(city):
+                    mini = e.get_weight(edge)
+                    # mini=neighbors[i][4]
+                    n.set_tag(e.get_src(edge), True)
+                    # neighbors[i][3] =True
+                    # weight=weight+neighbors[i][4]
+                    next = e.get_src(edge)
+
+                citys.append(next)
+                weight = weight + mini
+
+        if len(city) < len(node_lst):
+            return -1
+        if len(city) == len(node_lst):
+            return city, weight
 
     """
     Finds the node that has the shortest distance to it's farthest node.
@@ -113,7 +195,22 @@ class GraphAlgo(GraphAlgoInterface, ABC):
     """
 
     def centerPoint(self) -> (int, float):
-        super().centerPoint()
+        mincenter = sys.maxsize
+        lst_graph = self.graph.get_all_v()
+        center = -1
+        for node in lst_graph:
+            biggestDistance = 0
+            for i in lst_graph:
+                weight = GraphAlgo.shortest_path(node, n.get_key(i))
+                if weight > biggestDistance:
+                    biggestDistance = weight
+                    center = i
+
+            if biggestDistance < mincenter:
+                mincenter = biggestDistance
+                node_center = center
+
+        return node_center
 
     """
     Plots the graph.
@@ -139,8 +236,7 @@ class GraphAlgo(GraphAlgoInterface, ABC):
                 xDest = dest_pos[0]
                 yDest = dest_pos[1]
                 pt.plot([xSrc, xDest], [ySrc, yDest])  # draw the Edges of the graph
-
-        # pt.xlabel("x axis ")
-        # pt.ylabel("y axis ")
+        # pt.xlabel("x axis")
+        # pt.ylabel("y axis")
         pt.title("Directed Graph")
         pt.show()
