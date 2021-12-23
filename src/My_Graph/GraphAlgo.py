@@ -1,6 +1,7 @@
 import json
 from abc import ABC
 from typing import List
+from matplotlib import pyplot as pt
 
 from src.Graph_Interface.GraphAlgoInterface import GraphAlgoInterface
 from src.My_Graph.DiGraph import DiGraph
@@ -57,14 +58,14 @@ class GraphAlgo(GraphAlgoInterface, ABC):
         my_json_graph = dict()
         Nodes = []
         Edges = []
-        for v in self.graph.get_all_v().values():
+        for v in self.graph.get_all_v():
             node_id = n.get_key(v)
             node_pos = n.get_pos(v)
             node = {"id": node_id, "pos": node_pos}
             Nodes.append(node)
         for src in self.graph.get_all_v().keys():
             for dest, wight in self.graph.all_out_edges_of_node(src).items():
-                edge = {"src": src,  "dest": dest, "w": wight}
+                edge = {"src": src, "dest": dest, "w": wight}
                 Edges.append(edge)
         my_json_graph["Nodes"] = Nodes
         my_json_graph["Edges"] = Edges
@@ -122,4 +123,24 @@ class GraphAlgo(GraphAlgoInterface, ABC):
     """
 
     def plot_graph(self) -> None:
-        pass
+        fig, ax = pt.subplots()
+        for node in self.graph.get_all_v().values():
+            pos_tmp = n.get_pos(node)
+            id_tmp = n.get_key(node)
+            ax.scatter(pos_tmp[0], pos_tmp[1], color="blue", zorder=10)
+            ax.annotate(id_tmp, (pos_tmp[0], pos_tmp[1]))  # draw the Nodes of the graph
+        for node_edge in self.graph.get_all_v().values():
+            src = n.get_key(node_edge)
+            src_pos = n.get_pos(node_edge)
+            for dest in self.graph.all_out_edges_of_node(src):
+                dest_pos = n.get_pos(self.graph.get_node(dest))
+                xSrc = src_pos[0]
+                ySrc = src_pos[1]
+                xDest = dest_pos[0]
+                yDest = dest_pos[1]
+                pt.plot([xSrc, xDest], [ySrc, yDest])  # draw the Edges of the graph
+
+        # pt.xlabel("x axis ")
+        # pt.ylabel("y axis ")
+        pt.title("Directed Graph")
+        pt.show()
