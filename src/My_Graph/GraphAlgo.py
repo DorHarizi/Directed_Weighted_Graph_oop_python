@@ -96,121 +96,118 @@ class GraphAlgo(GraphAlgoInterface, ABC):
     Notes:
     If there is no path between id1 and id2, or one of them dose not exist the function returns (float('inf'),[])
     """
-
-    def shortest_path(self, id1: int, id2: int) -> (float, list):
-        if self.graph is None or self.graph.get_all_v(id1) is None or self.graph.get_all_v(id2) is None:
-            return float('inf'), []
-        if id1 == id2:
-            return float('inf'), []
-
-        nodes = self.graph.get_all_v()
-
-        if id1 not in nodes or id2 not in nodes:
-            return float('inf'), []
-
-        for node in nodes:
-            n.set_tag(node, False)
-            n.set_weight(node, sys.maxsize)  # set  weight
-
-        stack = {}  # create a stack  for the node we pass
-        shortest_path = {}  # create a dictionary for path  nodes
-
-        # nodes[id][0]=0
-        n.set_weight(nodes.keys(id1), 0)
-        stack[id1] = 0
-        while len(stack) != 0:
-            min_node = -1
-            min_weight = sys.maxsize
-            for i in stack.keys():
-                if n.get_weight(i) < min_weight:
-                    # if nodes.get(i)[4]<min_weight:
-                    #     min_weight=nodes.get(i)[4]
-                    min_weight == n.get_weight(i)
-                    min_node = i
-
-            if min_node == nodes.get(id2):
-                break
-
-            po = self.graph.get_all_v(min_node)
-            stack.pop(min_node)
-            neighbors = self.graph.all_out_edges_of_node(min_node)
-            for edge in neighbors:
-                if n.get_tag(edge) == False and e.get_weight(edge) + n.get_weight(po) < n.get_weight(node):
-                    # if nodes.get(i)[3]==False and neighbors.get(i) + po < nodes.get(i)[4]:]
-                    n.set_weight(node, (e.get_weight(edge) + e.get_weight(po)))
-                    # nodes.get(i)[3]=neighbors.get(i) + po
-                    shortest_path[edge] = min_node
-                    stack[edge] = neighbors.get(edge)
-                n.set_tag(nodes.get(min_node), True)
-            # nodes.get(min_node)[3]=True
-            if shortest_path.get(id2) is None:  # if we didn't found predecessor to the dest node
-                return float("inf"), []
-
-            path = [
-                id2]  # create a list that illustrate the shortest path and add the last vertex= the dest of the path
-            while id2 != id1:  # while isn't the start of the path
-                id2 = shortest_path.get(id2)  # get the previous vertex that we came from it to the current vertex
-                path.insert(0, id2)  # add it to the top of list
-            return n.get_weight(nodes.get(id2)), path  # return the path
-
     """
     Finds the shortest path that visits all the nodes in the list
     Return list of the nodes id's in the path, and the overall distance
     """
 
+    def shortest_path(self, id1: int, id2: int) -> (float, list):
+        """
+        Returns the shortest path from node id1 to node id2 using Dijkstra's Algorithm.
+        @param id1: Represents the src node id.
+        @param id2: Represents the dest node id.
+        @return: The distance of the path and list of the nodes ids that the path goes through.
+        If there is no path between id1 and id2, or one of them dose not exist the function returns (float('inf'),[]).
+        """
+        ans = (math.inf, [])
+        graph = self.get_graph()
+        graph_nodes = graph.get_all_v()
+        visited = {}
+        distance = {}
+        path = {}
+        queue = []
+        if id1 not in graph_nodes or id2 not in graph_nodes:
+            return ans
+        if id1 == id2:
+            ans = (0, [id1])
+            return ans
+        for node in graph.get_all_v():
+            distance[node] = math.inf
+        distance[id1] = 0
+        heapq.heappush(queue, (distance[id1], id1))
+        while len(queue) != 0:
+            current = heapq.heappop(queue)[1]
+            if current in visited:
+                continue
+            else:
+                visited[current] = 1
+                curr_edges = graph.all_out_edges_of_node(current)
+                for tmp_node in curr_edges:
+                    edge = curr_edges[tmp_node]
+                    if edge + distance[current] < distance[tmp_node]:
+                        distance[tmp_node] = edge + distance[current]
+                        path[tmp_node] = current
+                    if tmp_node not in visited:
+                        heapq.heappush(queue, (distance[tmp_node], tmp_node))
+
+        if id2 not in path:
+            return ans
+
+        final_distance = 0
+        final_list = []
+        final_list.append(id2)
+        final_distance = distance[id2]
+        tmp = path[id2]
+        while tmp != id1:
+            final_list.append(tmp)
+            tmp = path[tmp]
+        final_list.append(id1)
+        final_list.reverse()
+        return (final_distance, final_list)
+
+
     def TSP(self, node_lst: List[int]) -> (List[int], float):
         start = node_lst[0]
-        mini = sys.maxsize
+        visit =[]
+        path=[]
+        path.append(start)
         citys = []
         citys.append(start)
         weight = 0
+        for l in node_lst:
+             visit.append(False)
 
-        for city in citys:
 
-            n.get_key(neighbors.keys(edge)) != n.get_key(city)
 
-            neighbors = self.graph.all_out_edges_of_node(city)
 
-            for edge in neighbors:
-                if e.get_src(edge) in node_lst and n.get_tag(e.get_src(edge)) == False and e.get_src(
-                        edge) < mini and e.get_src(edge) != n.get(city):
-                    mini = e.get_weight(edge)
-                    # mini=neighbors[i][4]
-                    n.set_tag(e.get_src(edge), True)
-                    # neighbors[i][3] =True
-                    # weight=weight+neighbors[i][4]
-                    next = e.get_src(edge)
 
-                citys.append(next)
-                weight = weight + mini
+        while True:
+            # while len(citys) != 0:
 
-        if len(city) < len(node_lst):
-            return -1
-        if len(city) == len(node_lst):
-            return city, weight
+            if False not in visit:
+                break
 
-    """
-    Finds the node that has the shortest distance to it's farthest node.
-    Return The nodes id, min-maximum distance
-    """
+                for city in citys:
 
-    def centerPoint(self) -> (int, float):
-        mincenter = sys.maxsize
-        lst_graph = self.graph.get_all_v()
-        center = -1
-        for node in lst_graph:
-            biggestDistance = 0
-            for i in lst_graph:
-                weight = GraphAlgo.shortest_path(node, n.get_key(i))
-                if weight > biggestDistance:
-                    biggestDistance = weight
-                    center = i
 
-            if biggestDistance < mincenter:
-                mincenter = biggestDistance
-                node_center = center
+                    neighbors = self.graph.all_out_edges_of_node(n.get_key(city))
+                    mini = sys.maxsize
 
-        return node_center
+                    for edge in neighbors:
+                        if visit[edge] is False:
+                            # if neighbors.get(edge) < mini and edge != n.get_key(city):
+                            if self.shortest_path(n.get_key(city),edge)[0] < mini and edge != n.get_key(city):
+
+
+                               # mini = neighbors.get(edge)
+                               mini = self.shortest_path(n.get_key(city),edge)[0]
+
+                               visit[edge]=True
+                               next = node_lst[edge]
+
+                    citys.pop(0)
+                    path.append(next)
+                    weight = weight + mini
+                    if False in visit:
+                      visit[n.get_key(city)] = True
+
+                      citys.append(next)
+
+        if len(path) < len(node_lst):
+                return -1
+        if len(path) >= len(node_lst):
+             return (path, weight)
+
 
     """
     Plots the graph.
