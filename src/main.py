@@ -31,7 +31,7 @@ def check0():
     g = DiGraph()  # creates an empty directed graph
     for n in range(4):
         pos = ("1331.5434", "54435.531", "0.0")
-        g.add_node(n,  pos)
+        g.add_node(n, pos)
     g.add_edge(0, 1, 1)
     g.add_edge(1, 0, 1.1)
     g.add_edge(1, 2, 1.3)
@@ -46,9 +46,9 @@ def check0():
     print(g.list_of_Edges)
     g_algo = GraphAlgo(g)
     g1_algo = GraphAlgo()
-    g1_algo.load_from_json(r"C:\Users\dorha\PycharmProjects\Directed_Weighted_Graph_oop_python\data\A0.json")
+    g1_algo.load_from_json(r"C:\Users\dorha\PycharmProjects\Directed_Weighted_Graph_oop_python\src\data\A0.json")
     print(g1_algo.graph.get_all_v().values())
-    print(g_algo.shortest_path(0, 3))
+    print(g1_algo.shortest_path(0, 3))
     g1_algo.plot_graph()
 
 
@@ -58,7 +58,7 @@ def check1():
     :return:
     """
     g_algo = GraphAlgo()  # init an empty graph - for the GraphAlgo
-    file = "../data/T0.json"
+    file = "Directed_Weighted_Graph_oop_python\data\A0.json"
     g_algo.load_from_json(file)  # init a GraphAlgo from a json file
     print(g_algo.shortest_path(0, 3))
     print(g_algo.shortest_path(3, 1))
@@ -72,7 +72,7 @@ def check2():
       :return:
       """
     g_algo = GraphAlgo()
-    file = '../data/A5.json'
+    file = 'data/A5.json'
     g_algo.load_from_json(file)
     g_algo.get_graph().remove_edge(13, 14)
     g_algo.save_to_json(file + "_edited")

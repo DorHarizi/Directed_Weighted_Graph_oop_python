@@ -1,13 +1,13 @@
+import heapq
 import json
 import sys
 from abc import ABC
 from typing import List
 from matplotlib import pyplot as pt
-
+import math
 from src.Graph_Interface.GraphAlgoInterface import GraphAlgoInterface
 from src.My_Graph.DiGraph import DiGraph
 from src.My_Graph.NodeData import NodeData as n
-from src.My_Graph.EdgeData import EdgeData as e
 
 
 class GraphAlgo(GraphAlgoInterface, ABC):
@@ -41,7 +41,8 @@ class GraphAlgo(GraphAlgoInterface, ABC):
                         if v["id"] is not None:
                             # need to check if this call to function without the less parameters its ok;
                             key = v["id"]
-                            pos = v["pos"]
+                            posTmp = v["pos"]
+                            pos = tuple(float(s) for s in posTmp.strip("()").split(","))
                             self.graph.add_node(key, pos)
                     for v in new_Edges:
                         if v["src"] is not None and v["dest"] is not None and v["w"] is not None:
@@ -100,14 +101,8 @@ class GraphAlgo(GraphAlgoInterface, ABC):
     Finds the shortest path that visits all the nodes in the list
     Return list of the nodes id's in the path, and the overall distance
     """
+
     def shortest_path(self, id1: int, id2: int) -> (float, list):
-        """
-        Returns the shortest path from node id1 to node id2 using Dijkstra's Algorithm.
-        @param id1: Represents the src node id.
-        @param id2: Represents the dest node id.
-        @return: The distance of the path and list of the nodes ids that the path goes through.
-        If there is no path between id1 and id2, or one of them dose not exist the function returns (float('inf'),[]).
-        """
         ans = (math.inf, [])
         graph = self.get_graph()
         graph_nodes = graph.get_all_v()
@@ -141,7 +136,6 @@ class GraphAlgo(GraphAlgoInterface, ABC):
 
         if id2 not in path:
             return ans
-
         final_distance = 0
         final_list = []
         final_list.append(id2)
@@ -154,91 +148,44 @@ class GraphAlgo(GraphAlgoInterface, ABC):
         final_list.reverse()
         return (final_distance, final_list)
 
-
     def TSP(self, node_lst: List[int]) -> (List[int], float):
         start = node_lst[0]
-        visit =[]
-        path=[]
+        visit = []
+        path = []
         path.append(start)
         citys = []
         citys.append(start)
         weight = 0
         for l in node_lst:
-             visit.append(False)
-
+            visit.append(False)
         while True:
             # while len(citys) != 0:
-
             if False not in visit:
                 break
-
-            for city in citys:
-
-
-                neighbors = self.graph.all_out_edges_of_node(n.get_key(city))
-                mini = sys.maxsize
-
-                for edge in neighbors:
-                    if visit[edge] is False:
-                        # if neighbors.get(edge) < mini and edge != n.get_key(city):
-                        if self.shortest_path(n.get_key(city),edge)[0] < mini and edge != n.get_key(city):
-
-
-                            # mini = neighbors.get(edge)
-                            mini = self.shortest_path(n.get_key(city),edge)[0]
-
-                            visit[edge]=True
-                            next = node_lst[edge]
-
-                citys.pop(0)
-                path.append(next)
-                weight = weight + mini
-                if False in visit:
-                    visit[n.get_key(city)] = True
-
-                    citys.append(next)
-
+                for city in citys:
+                    neighbors = self.graph.all_out_edges_of_node(n.get_key(city))
+                    mini = sys.maxsize
+                    for edge in neighbors:
+                        if visit[edge] is False:
+                            # if neighbors.get(edge) < mini and edge != n.get_key(city):
+                            if self.shortest_path(n.get_key(city), edge)[0] < mini and edge != n.get_key(city):
+                                # mini = neighbors.get(edge)
+                                mini = self.shortest_path(n.get_key(city), edge)[0]
+                                visit[edge] = True
+                                next = node_lst[edge]
+                    citys.pop(0)
+                    path.append(next)
+                    weight = weight + mini
+                    if False in visit:
+                        visit[n.get_key(city)] = True
+                        citys.append(next)
         if len(path) < len(node_lst):
-                return -1
+            return -1
         if len(path) >= len(node_lst):
-             return (path, weight)
-
-        """
-        Finds the node that has the shortest distance to it's farthest node.
-        Return The nodes id, min-maximum distance
-        """
-
-    def centerPoint(self) -> (int, float):
-        mincenter = sys.maxsize
-        graph = self.graph
-        lst_graph = graph.get_all_v()
-        center = -1
-        for key in lst_graph.keys():
-
-            biggestDistance = 0
-            for k in lst_graph.keys():
-
-                id1 = key
-                id2 = k
-
-                if id1 == id2:
-                    continue
-
-                weight = self.shortest_path(id1, id2)[0]
-                if weight > biggestDistance:
-                    biggestDistance = weight
-
-            if biggestDistance < mincenter:
-                mincenter = biggestDistance
-                node_center = key
-
-        return (node_center, mincenter)
-
+            return (path, weight)
 
     """
-    Plots the graph.
-    If the nodes have a position, the nodes will be placed there.
-    Otherwise, they will be placed in a random but elegant manner.
+    , they will be placed in a random but elegant manner.
     Return None
     """
 
@@ -258,8 +205,7 @@ class GraphAlgo(GraphAlgoInterface, ABC):
                 ySrc = src_pos[1]
                 xDest = dest_pos[0]
                 yDest = dest_pos[1]
-                pt.plot([xSrc, xDest], [ySrc, yDest])  # draw the Edges of the graph
-        # pt.xlabel("x axis")
-        # pt.ylabel("y axis")
+                pt.plot([xSrc, xDest], [ySrc, yDest], color="black")
         pt.title("Directed Graph")
         pt.show()
+
