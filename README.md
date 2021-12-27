@@ -102,6 +102,11 @@ param file - file name of JSON file
 - 10,000 Vertices 100,000 Edges: 0.587 sec
 - 100,000 Vertices 1,000,000 Edges: 13.385 sec
 
+## Performance comparison 
+-  java vs python check Performanc of getgraph func  for 10/1000/10000 nodes (in ms) :
+![image](https://user-images.githubusercontent.com/92825016/147482950-224c6975-9e99-4c3f-813d-c31ffed29fa1.png)
+
+
 ## GUI - graphic interface :
 When you open 'GUI' from Main class will open panel thet creat the graph from the json file thet you laod:
 ![image](https://user-images.githubusercontent.com/92825016/147473194-ee0c4908-db46-4f1f-a75d-68ee6f08a048.png)
