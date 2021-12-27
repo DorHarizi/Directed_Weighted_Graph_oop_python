@@ -105,14 +105,14 @@ param file - file name of JSON file
 - 100,000 Vertices 1,000,000 Edges: timeout
 
 ## GUI - graphic interface :
-When you open 'GUI' from Ex2 class will open panel thet creat the graph from the json file thet you laod:
-![image](https://user-images.githubusercontent.com/92825016/146669687-37d49901-5646-43c1-9d24-3980251b31e1.png)
+When you open 'GUI' from Main class will open panel thet creat the graph from the json file thet you laod:
+![image](https://user-images.githubusercontent.com/92825016/147473194-ee0c4908-db46-4f1f-a75d-68ee6f08a048.png)
 
-in menu bar you can chose to laod other graph or to operate the functuion(from my algo) on the graph.
-![image](https://user-images.githubusercontent.com/92825016/146669762-5f947775-d11b-49cc-b72a-2cb5c2e9e388.png)
-
-![image](https://user-images.githubusercontent.com/92825016/146669783-a6cb445f-76cf-4a75-9a89-54a1de17af95.png)
+you can chose to laod other graph or to operate the functuion(from GraphAlgo) on the graph.
 
 When you finish you can to save the graph or to exit from 'GUI'.
+![image](https://user-images.githubusercontent.com/92825016/147473376-3886c907-eca3-4b27-a87f-70bcc1b06bba.png)
 
-**BarNahmias&OriaZadock**
+
+
+**BarNahmias&DorHrizi**
