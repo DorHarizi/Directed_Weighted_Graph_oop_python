@@ -102,7 +102,7 @@ class GraphAlgo(GraphAlgoInterface, ABC):
     Return list of the nodes id's in the path, and the overall distance
     """
 
-  def shortest_path(self, id1: int, id2: int) -> (float, list):
+    def shortest_path(self, id1: int, id2: int) -> (float, list):
         """
         Returns the shortest path from node id1 to node id2 using Dijkstra's Algorithm.
         @param id1: Represents the src node id.
