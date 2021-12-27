@@ -38,7 +38,7 @@
 Inits the graph on which this set of algorithms operates on.
 
 
-#### **shortestPathDist()**
+#### **shortestPath()**
 Computes the length of the shortest path between src to dest
 Note: if no such path --> returns -1.
  - this function based on **Diastra** algorithm. 
@@ -50,14 +50,8 @@ Algorithm loop:
 Y is updated so that its distance is equal to the minimum value between two values: between the current distance, the weight of the arc connecting X and Y and the distance between S and X.
 4. Make a new vertex X according to a code that this distance from the source node S is the shortest of all the vertices in the graph that we have not yet visited.
 * This site was built using [Wikipedia Pages](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm).
-#### **shortestPath()**
-Computes the the shortest path between src to dest - as an ordered List of nodes:
-src--> n1-->n2-->...dest
-Note if no such path --> returns null;
 
-This function is based on the function **shortestPathDist()** and return shorter List of nodes.
-
-#### **center()**
+#### **centerpoint()**
  Finds the NodeData which minimizes the max distance to all the other nodes.
  Assuming the graph isConnected, elese return null. 
  return the Node data to which the max shortest path to all the other nodes is minimized
@@ -83,26 +77,30 @@ the lower the better.
 This method loads a graph to this graph algorithm.
 param file - file name of JSON file
 
-## Run times :
+## Run times  :
+### Intel(R) Core(TM) i7-10510U CPU @ 1.80GHz   2.30 GHz 12.0 GB RAM 64x
 
 **Building large graphs:**
-
-- 1,000 Vertices 10,000 Edges: 153 ms
-- 10,000 Vertices 100,000 Edges: 511 ms
-- 100,000 Vertices 1,000,000 Edges: 5 sec 422 ms
+- 10 Vertices 20 Edges : 0.002 sec
+- 1,000 Vertices 10,000 Edges: 0.046 sec
+- 10,000 Vertices 100,000 Edges: 0.446 sec
+- 100,000 Vertices 1,000,000 Edges: 11.654 sec
 
 **Running Algorithms:**
-**isConnected + load file**:
 
-- 1,000 Vertices 10,000 Edges: 185 ms
-- 10,000 Vertices 100,000 Edges: 579 ms
-- 100,000 Vertices 2,000,000 Edges: 5 sec 708 ms
+**centerpoint**:
 
-**shorterpas + load file**:
+- 10 Vertices 20 Edges : 0.002 sec
+- 1,000 Vertices 10,000 Edges: 5.987 sec
+- 10,000 Vertices 100,000 Edges: timeout
+- 100,000 Vertices 2,000,000 Edges: timeout
 
-- 1,000 Vertices 10,000 Edges: 201 ms
-- 10,000 Vertices 100,000 Edges: 1 min 216 sec
-- 100,000 Vertices 1,000,000 Edges: timeout
+**shortestpath + load file**:
+
+- 10 Vertices 20 Edges : 0.002 sec
+- 1,000 Vertices 10,000 Edges: 0.05 sec
+- 10,000 Vertices 100,000 Edges: 0.587 sec
+- 100,000 Vertices 1,000,000 Edges: 13.385 sec
 
 ## GUI - graphic interface :
 When you open 'GUI' from Main class will open panel thet creat the graph from the json file thet you laod:
