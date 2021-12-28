@@ -1,0 +1,91 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+GraphAlgo <|-- NodeData
+GraphAlgo <|-- EdgeData
+GraphAlgo <|-- DiGraph
+
+DiGraph <|--EdgeData
+DiGraph <|--NodeData
+
+class NodeData {
++ def__init__(self, key: int = None, info: str = None, tag: float = None, pos: tuple = None, weight: float = None)
++       self.key:int
++       self.info:str
++       self.tag:float
++       self.pos:tuple
++       self.weight:float
++ def get_key(self)--> int:
++ def set_key(self, key):
++ def set_info(self, info):
++ def get_info(self)--> str:
++ def get_tag(self)--> int:
++ def set_tag(self, tag):
++ def get_weight(self):
++ def set_weight(self, wight):
++ def get_pos(self)--> tuple:
++ def set_pos(self, pos):
+}
+
+class EdgeData {
+ +def __init__(self, src: int = None, dest: int = None, weight: float = None)
+ +       self.src: int
+ +       self.dest: int
+ +      self.weight: float
+ +def get_src(self)--> int:
+ +def get_dest(self)--> int:
+ +def get_weight(self)--> float:
+ +def set_weight(self, weight):
+ +def set_src(self, src):
+ +def set_dest(self, dest):
+}
+class GraphAlgo {
+import heapq
+import json
+import sys
+import matplotlib.pyplot as plt
+import math
+from abc import ABC
+from typing import List
+from src.Graph_Interface.GraphAlgoInterface import GraphAlgoInterface
+from src.My_Graph.DiGraph import DiGraph
+from src.My_Graph.NodeData import NodeData as n
+
+ +def __init__(self, graph: DiGraph = None)
+ +      self.graph: DiGraph
+ +def get_graph(self) -> DiGraph:
+ +def load_from_json(self, file_name: str) -> bool:
+ +def save_to_json(self, file_name: str) -> bool:
+ +def shortest_path(self, id1: int, id2: int) -> (float, list):
+ +def TSP(self, node_lst: List[int]) -> (List[int], float):
+ +def centerPoint(self) -> (int, float):
+ +def plot_graph(self) -> None:
+}
+class DiGraph {
+from abc import ABC
+from src.My_Graph.NodeData import NodeData
+from src.Graph_Interface.GraphInterface import GraphInterface
+from src.My_Graph.EdgeData import EdgeData
+
++def __init__(self):
++       self.list_Of_Nodes: dict()
++       self.list_of_Edge_Dest: dict()
++       self.list_of_Edge_Src: dict()
++       self.list_of_Edges: dict()
++       self.size_Of_Edge: 0
++       self.mC: 0
++def get_node(self, key) -> NodeData:
++def v_size(self) -> int:
++def e_size(self) -> int:
++def get_all_v(self) -> dict:
++def all_in_edges_of_node(self, id1: int) -> dict:
++def all_out_edges_of_node(self, id1: int) -> dict:
++def get_mc(self) -> int:
++def add_edge(self, id1: int, id2: int, weight: float) -> bool:
++def add_node(self, node_id: int, pos: tuple) -> bool:
++def remove_node(self, node_id: int) -> bool:
++def remove_edge(self, node_id1: int, node_id2: int) -> bool:
+}
+
+
+@enduml

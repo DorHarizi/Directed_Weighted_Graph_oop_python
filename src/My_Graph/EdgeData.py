@@ -1,6 +1,3 @@
-from typing import Any
-
-
 class EdgeData:
     def __init__(self, src: int = None, dest: int = None, weight: float = None):
         self.src = src
