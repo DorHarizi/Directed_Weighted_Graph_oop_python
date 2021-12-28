@@ -10,6 +10,11 @@ from src.My_Graph.DiGraph import DiGraph
 from src.My_Graph.NodeData import NodeData as n
 
 
+
+n
+
+
+
 class GraphAlgo(GraphAlgoInterface, ABC):
 
     def __init__(self, graph: DiGraph = None):
@@ -107,7 +112,7 @@ class GraphAlgo(GraphAlgoInterface, ABC):
         Returns the shortest path from node id1 to node id2 using Dijkstra's Algorithm.
         @param id1: Represents the src node id.
         @param id2: Represents the dest node id.
-        @return: The weight of the path and list of the nodes ids that the path goes through.
+        @return: The distance of the path and list of the nodes ids that the path goes through.
         If there is no path between id1 and id2, or one of them dose not exist the function returns (float('inf'),[]).
         """
         ans = (math.inf, [])
@@ -119,10 +124,12 @@ class GraphAlgo(GraphAlgoInterface, ABC):
         queue = []
 
         if id1 == id2:
-            ans = (0, [id1])
-            return ans
+            return (0, [id1])
 
-        if id1 or id2 not in nodes:
+
+        if id1 not in nodes:
+            return ans
+        if id2 not in nodes:
             return ans
 
         for node in graph.get_all_v():
@@ -138,12 +145,16 @@ class GraphAlgo(GraphAlgoInterface, ABC):
                 curr_edges = graph.all_out_edges_of_node(current)
                 for tmp_node in curr_edges:
                     edge = curr_edges[tmp_node]
-                    if tmp_node not in visited:
-                        heapq.heappush(queue, (weight[tmp_node], tmp_node))
 
                     if edge + weight[current] < weight[tmp_node]:
                         weight[tmp_node] = edge + weight[current]
                         path[tmp_node] = current
+
+                    if tmp_node not in visited:
+                        heapq.heappush(queue, (weight[tmp_node], tmp_node))
+
+
+
 
         if id2 not in path:
             return ans
@@ -160,6 +171,55 @@ class GraphAlgo(GraphAlgoInterface, ABC):
         final_list.reverse()
         return (final_distance, final_list)
 
+
+    def TSPT(self, node_lst: List[int]) -> (List[int], float):
+        start = node_lst[0]
+        visit = []
+        path = []
+        path.append(n.get_key(start))
+        citys = []
+        citys.append(start)
+        weight = 0
+        for l in node_lst:
+            visit.append(False)
+
+        while True:
+
+            if False not in visit:
+                break
+
+            for city in citys:
+
+                if visit[n.get_key(city)] is True:
+                    return -1
+
+                mini = sys.maxsize
+
+                for edge in node_lst:
+
+                    if visit[edge] is False:
+                        if self.shortest_path(n.get_key(city), edge)[0] < mini and edge != n.get_key(city):
+
+                            mini = self.shortest_path(n.get_key(city), edge)[0]
+                            getnext=node_lst[edge]
+                            getedge=edge
+
+                next = getnext
+
+                citys.pop(0)
+                path.append(n.get_key(next))
+                weight = weight + mini
+                if False in visit:
+                    visit[n.get_key(city)] = True
+
+                    citys.append(next)
+
+        if len(path) < len(node_lst):
+            return -1 ,path
+        if len(path) >= len(node_lst):
+            return (path, weight)
+
+
     def TSP(self, node_lst: List[int]) -> (List[int], float):
         start = node_lst[0]
         visit = []
@@ -172,25 +232,26 @@ class GraphAlgo(GraphAlgoInterface, ABC):
             visit.append(False)
 
         while True:
-            # while len(citys) != 0:
 
             if False not in visit:
                 break
 
             for city in citys:
 
-                neighbors = self.graph.all_out_edges_of_node(n.get_key(city))
+                if visit[n.get_key(city)] is True:
+                    return -1
+
                 mini = sys.maxsize
 
-                for edge in neighbors:
-                    if visit[edge] is False:
-                        # if neighbors.get(edge) < mini and edge != n.get_key(city):
-                        if self.shortest_path(n.get_key(city), edge)[0] < mini and edge != n.get_key(city):
-                            # mini = neighbors.get(edge)
-                            mini = self.shortest_path(n.get_key(city), edge)[0]
+                for edge in node_lst:
 
-                            visit[edge] = True
-                            next = node_lst[edge]
+                    if visit[edge] is False:
+                        if self.shortest_path(n.get_key(city), edge)[0] < mini and edge != n.get_key(city):
+                            mini = self.shortest_path(n.get_key(city), edge)[0]
+                            getnext = node_lst[edge]
+                            getedge = edge
+
+                next = getnext
 
                 citys.pop(0)
                 path.append(next)
@@ -201,49 +262,10 @@ class GraphAlgo(GraphAlgoInterface, ABC):
                     citys.append(next)
 
         if len(path) < len(node_lst):
-            return -1
+            return -1, path
         if len(path) >= len(node_lst):
             return (path, weight)
 
-        """
-        Finds the node that has the shortest distance to it's farthest node.
-        Return The nodes id, min-maximum distance
-        """
-
-        """
-        Finds the node that has the shortest distance to it's farthest node.
-        Return The nodes id, min-maximum distance
-        """
-
-    def centerPoint(self) -> (int, float):
-        mincenter = sys.maxsize
-        graph = self.graph
-        lst_graph = graph.get_all_v()
-        center = -1
-        for key in lst_graph.keys():
-
-            biggestDistance = 0
-            for k in lst_graph.keys():
-
-                id1 = key
-                id2 = k
-
-                if id1 == id2:
-                    continue
-
-                weight = self.shortest_path(id1, id2)[0]
-                if weight > biggestDistance:
-                    biggestDistance = weight
-
-            if biggestDistance < mincenter:
-                mincenter = biggestDistance
-                node_center = key
-
-        return node_center, mincenter
-
-    """
-    , they will be placed in a random but elegant manner.
-    Return None
     """
 
     def plot_graph(self) -> None:
