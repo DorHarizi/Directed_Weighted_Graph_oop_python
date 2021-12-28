@@ -1,9 +1,12 @@
+import locale
 from tkinter import *
+from tkinter import filedialog, messagebox
 
 import matplotlib
 from matplotlib import pyplot as plt
 
 from src.My_Graph import GraphAlgo
+from src.My_Graph.DiGraph import DiGraph
 from src.My_Graph.NodeData import NodeData as n
 
 matplotlib.use("TkAgg")
@@ -29,59 +32,99 @@ class my_frame:
         self.windowFrameGraph()
 
     ################### The functions that make the process after the user click the menubar Options #######################
-    def new(self):
-        print("we need to arrange this function after we wrote the remove_edge")
 
     def load(self):
-        print("we need to arrange this function after we wrote the remove_edge")
+        filePatch = filedialog.askopenfile(title="Open file")
+        newGraph: GraphAlgo.GraphAlgo
+        bol = newGraph.load_from_json(filePatch)
+        if bol is True:
+            my_frame(newGraph)
+            self.window.quit()
+        else:
+            messagebox.showerror(title='Error with load the file', message="Json file wasn't found!")
 
     def save(self):
-        print("we need to arrange this function after we wrote the remove_edge")
+        filePatch = str(filedialog.asksaveasfile(title='Save file'))
+        bol = self.graphAlgo.save_to_json(filePatch)
+        if bol is True:
+            self.window.quit()
+        else:
+            messagebox.showerror(title='Error with save the file', message="An error occurred!")
 
     def clear(self):
-        print("we need to arrange this function after we wrote the remove_edge")
+        self.frame_graph.destroy()
 
     def Vertices(self):
         windowNodes = Tk()
-        nodesString = {}
-        for node in self.graphAlgo.graph.list_Of_Nodes.values:
-            strTmp = {'{"id" =%d,"pos"=%s}' % (n.get_key(node), n.get_pos(node))}
-            nodesString.update(strTmp)
-        labelNodes = Label(windowNodes,
-                           font=('Ariel', 20, 'bold'),
-                           fg='white',
-                           bg='black',
-                           relife=RAISED,
-                           padx=20,
-                           pady=20)
-        labelNodes.pack()
+        windowNodes.geometry("%dx%d" % (self.width_window, self.height_window))
+        windowNodes.title("Data of Vertices")
+        nodesString = {"List of vertices:\n"}
 
-    def Edges(self):
-        windowEdges = Tk()
-        labelEdges = Label(windowEdges,
-                           font=('Ariel', 20, 'bold'),
+        for node in self.graphAlgo.graph.get_all_v().values():
+            strTmp = '\t"Vertex"%d:\n' \
+                     '\t\t\t\t\t"pos"=%s\n' \
+                     % (n.get_key(node), n.get_pos(node))
+            nodesString.add(strTmp)
+        sttTmp = ""
+        for st in nodesString:
+            sttTmp = sttTmp + st
+        labelNodes = Label(windowNodes,
+                           text=sttTmp.__str__(),
+                           font=('Ariel', 10, 'bold'),
                            fg='white',
                            bg='black',
-                           relife=RAISED,
-                           padx=20,
+                           padx=0,
                            pady=20)
-        labelEdges.pack()
+        labelNodes.pack(fill=BOTH, expand=True)
+        windowNodes.mainloop()
 
     def Graph(self):
         windowGraph = Tk()
+        windowNodes = Tk()
+        windowNodes.geometry("%dx%d" % (self.width_window / 2, self.height_window / 3))
+        windowNodes.title("Data of Graph")
+        graphString = {"Data of Graph:\n"}
+        for node in self.graphAlgo.graph.get_all_v().values():
+            edgesOutTmp = ()
+            key = n.get_key(node)
+            for edgeOut in self.graphAlgo.graph.all_out_edges_of_node(key):
+                edge1 = "(%d,%d)" % (n.get_key(node), edgeOut)
+                edgesOutTmp.count(edge1)
+            edgesInTmp = ()
+            for edgeIn in self.graphAlgo.graph.all_in_edges_of_node(key):
+                edge2 = "(%d,%d)" % (edgeIn, n.get_key(node))
+                edgesInTmp.count(edge2)
+            strTmp = '\t\t\t\t\t"Vertex":id=%d\n' \
+                     '\t\t\t\t\t\t\t"All out Edges:' \
+                     '%s\n' \
+                     '\t\t\t\t\t\t\t"All in Edges:' \
+                     '%s\n' \
+                     % (n.get_key(node), edgesOutTmp, edgesInTmp)
+            graphString.add(strTmp)
+        sttTmp = ""
+        for st in graphString:
+            sttTmp = sttTmp + st
+
         labelGraph = Label(windowGraph,
+                           text=sttTmp,
                            font=('Ariel', 20, 'bold'),
                            fg='white',
                            bg='black',
-                           relife=RAISED,
                            padx=20,
                            pady=20)
-        labelGraph.pack()
+        labelGraph.pack(fill=BOTH, expand=True)
+        windowGraph.mainloop()
 
     ######################## The functions that make the process after the user click the button ######################
 
     def clickCenterPoint(self):
-        print("we need to arrange this function after we wrote the center_point")
+        # graph = self.graphAlgo
+        # my_frame(self, 1)
+        # self.window.quit()
+        pass
+
+
+
 
     def clickShortestPath(self):
         print("we need to arrange this function after we wrote the shortest_path")
@@ -105,7 +148,6 @@ class my_frame:
     def windowMenuBar(self):
 
         fileMenu = Menu(self.menuBar, tearoff=0)
-        fileMenu.add_command(label="New", command=self.new)
         fileMenu.add_command(label="Load", command=self.load)
         fileMenu.add_command(label="Save", command=self.save)
 
@@ -126,7 +168,6 @@ class my_frame:
         DataGraphMenu = Menu(self.menuBar, tearoff=0)
         DataGraphMenu.add_command(label="Graph", command=self.Graph)
         DataGraphMenu.add_command(label="Vertices", command=self.Vertices)
-        DataGraphMenu.add_command(label="Edges", command=self.Edges)
         self.menuBar.add_cascade(label="Data Of Graph", menu=DataGraphMenu)
 
         self.window.config(menu=self.menuBar)
@@ -235,6 +276,17 @@ class my_frame:
                 yMax = pos_tmp[1]
             if pos_tmp[1] < yMin:
                 yMin = pos_tmp[0]
+                # if self.tag != 0:
+                #     tmp = self.graphAlgo.centerPoint()
+                #     center = tmp[0]
+                #     if id_tmp is not center:
+                #         axes.scatter(pos_tmp[0], pos_tmp[1], color="yellow", zorder=15)
+                #         axes.annotate(id_tmp, (pos_tmp[0] + 0.0001, pos_tmp[1] + 0.00015), color="orange",
+                #                       fontsize=15)  # draw the Nodes of the graph
+                #     else:
+                #         axes.scatter(pos_tmp[0], pos_tmp[1], color="red", zorder=15)
+                #         axes.annotate(id_tmp, (pos_tmp[0] + 0.0001, pos_tmp[1] + 0.00015), color="orange",
+                #                       fontsize=15)  # draw the Nodes of the graph
             axes.scatter(pos_tmp[0], pos_tmp[1], color="yellow", zorder=15)
             axes.annotate(id_tmp, (pos_tmp[0] + 0.0001, pos_tmp[1] + 0.00015), color="orange",
                           fontsize=15)  # draw the Nodes of the graph
@@ -273,7 +325,7 @@ class my_frame:
         for node in self.graphAlgo.get_all_v().values():
             pos_tmp = n.get_pos(node)
             id_tmp = n.get_key(node)
-            ax.scatter(pos_tmp[0], pos_tmp[1], color="blue", zorder=10)
+            ax.scatter(pos_tmp[0], pos_tmp[1], color="yellow", zorder=10)
             ax.annotate(id_tmp, (pos_tmp[0], pos_tmp[1]))  # draw the Nodes of the graph
         for node_edge in self.graphAlgo.get_all_v().values():
             src = n.get_key(node_edge)
@@ -284,7 +336,7 @@ class my_frame:
                 ySrc = src_pos[1]
                 xDest = dest_pos[0]
                 yDest = dest_pos[1]
-                plt.plot([xSrc, xDest], [ySrc, yDest], color="black")
+                plt.plot([xSrc, xDest], [ySrc, yDest], color="white")
         plt.title("Directed Graph")
         plt.show()
 

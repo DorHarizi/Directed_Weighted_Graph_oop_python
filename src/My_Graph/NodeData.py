@@ -17,6 +17,7 @@ class NodeData:
         key = self.key
         return key
 
+
     """
     Set the NodeData key (node_id)
     """

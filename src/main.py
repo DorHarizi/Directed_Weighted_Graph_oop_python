@@ -47,6 +47,7 @@ def check0():
     g_algo = GraphAlgo(g)
     g1_algo = GraphAlgo()
     g1_algo.load_from_json(r"C:\Users\dorha\PycharmProjects\Directed_Weighted_Graph_oop_python\src\data\A1.json")
+    g1_algo.save_to_json(r"C:\Users\dorha\PycharmProjects\Directed_Weighted_Graph_oop_python\src\My_Graph\dor.json")
     print(g1_algo.graph.get_all_v().values())
     print(g1_algo.shortest_path(0, 3))
     g1_algo.plot_graph()

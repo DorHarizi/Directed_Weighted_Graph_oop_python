@@ -62,7 +62,7 @@ class GraphAlgo(GraphAlgoInterface, ABC):
         my_json_graph = dict()
         Nodes = []
         Edges = []
-        for v in self.graph.get_all_v():
+        for v in self.graph.get_all_v().values():
             node_id = n.get_key(v)
             node_pos = n.get_pos(v)
             node = {"id": node_id, "pos": node_pos}
