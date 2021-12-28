@@ -1,296 +1,295 @@
-import os
-from sys import getsizeof
 from tkinter import *
-from tkinter.ttk import Notebook
 
-from src.My_Graph import DiGraph
-from src.My_Graph.NodeData import NodeData as n
-from matplotlib import pyplot as plt
 import matplotlib
-import pandas as pd
-import numpy as np
+from matplotlib import pyplot as plt
+
+from src.My_Graph import GraphAlgo
+from src.My_Graph.NodeData import NodeData as n
 
 matplotlib.use("TkAgg")
-import src.My_Graph.GraphAlgo
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
-from matplotlib.figure import Figure
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
 
 ####################################### create the main window #########################################################
+class my_frame:
+    def __init__(self, myGraphAlgo: GraphAlgo = None):
+        self.graphAlgo = myGraphAlgo
+        self.window = Tk()
+        self.width_window = self.window.winfo_screenwidth()
+        self.height_window = self.window.winfo_screenheight()
+        self.window.geometry("%dx%d" % (self.width_window, self.height_window))
+        self.window.title("Directed Weighted Graph Algorithm")
+        self.menuBar = Menu(self.window)
+        self.frame_buttons = Frame(self.window, bg="black")
+        self.frame_buttons.pack(side=TOP)
+        self.frame_graph = Frame(self.window)
+        self.frame_graph.pack(fill=BOTH, expand=True)
+        self.windowMenuBar()
+        self.windowFrameButtons()
+        self.windowFrameGraph()
 
+    ################### The functions that make the process after the user click the menubar Options #######################
+    def new(self):
+        print("we need to arrange this function after we wrote the remove_edge")
 
-window = Tk()
+    def load(self):
+        print("we need to arrange this function after we wrote the remove_edge")
 
-# getting screen width and height of display
-width_window = window.winfo_screenwidth()
-height_window = window.winfo_screenheight()
-# width_button = (int(width_window / 8))
-# setting tkinter window size
-window.geometry("%dx%d" % (width_window, height_window))
-window.title("Directed Weighted Graph Algorithm")
-window.config(background="darkgray")
+    def save(self):
+        print("we need to arrange this function after we wrote the remove_edge")
 
-frame_buttons = Frame(window, bg="black")
-frame_buttons.pack(side=TOP)
-frame_graph = Frame(window)
-frame_graph.pack(fill=BOTH, expand=True)
+    def clear(self):
+        print("we need to arrange this function after we wrote the remove_edge")
 
+    def Vertices(self):
+        windowNodes = Tk()
+        nodesString = {}
+        for node in self.graphAlgo.graph.list_Of_Nodes.values:
+            strTmp = {'{"id" =%d,"pos"=%s}' % (n.get_key(node), n.get_pos(node))}
+            nodesString.update(strTmp)
+        labelNodes = Label(windowNodes,
+                           font=('Ariel', 20, 'bold'),
+                           fg='white',
+                           bg='black',
+                           relife=RAISED,
+                           padx=20,
+                           pady=20)
+        labelNodes.pack()
 
-# icon_window = PhotoImage(file='algorithm-icon.png')
-# window.iconphoto(False, icon_window)
+    def Edges(self):
+        windowEdges = Tk()
+        labelEdges = Label(windowEdges,
+                           font=('Ariel', 20, 'bold'),
+                           fg='white',
+                           bg='black',
+                           relife=RAISED,
+                           padx=20,
+                           pady=20)
+        labelEdges.pack()
 
-#################################### label graph our window#############################################################
-# g1_algo = GraphAlgo()
-# g1_algo.load_from_json(r"C:\Users\dorha\PycharmProjects\Directed_Weighted_Graph_oop_python\src\data\A0.json")
+    def Graph(self):
+        windowGraph = Tk()
+        labelGraph = Label(windowGraph,
+                           font=('Ariel', 20, 'bold'),
+                           fg='white',
+                           bg='black',
+                           relife=RAISED,
+                           padx=20,
+                           pady=20)
+        labelGraph.pack()
 
+    ######################## The functions that make the process after the user click the button ######################
 
-def frameGraph(graphAlgo):
-    fig, axes = plt.subplots()
-    xMax = -float('inf')
-    xMin = float('inf')
-    yMax = -float('inf')
-    yMin = float('inf')
-    for node in graphAlgo.graph.get_all_v().values():
-        pos_tmp = n.get_pos(node)
-        id_tmp = n.get_key(node)
-        if xMax < pos_tmp[0]:
-            xMax = pos_tmp[0]
-        if pos_tmp[0] < xMin:
-            xMin = pos_tmp[0]
-        if yMax < pos_tmp[1]:
-            yMax = pos_tmp[1]
-        if pos_tmp[1] < yMin:
-            yMin = pos_tmp[0]
-        axes.scatter(pos_tmp[0], pos_tmp[1], color="yellow", zorder=15)
-        axes.annotate(id_tmp, (pos_tmp[0] + 0.0001, pos_tmp[1] + 0.00015), color="orange",
-                      fontsize=15)  # draw the Nodes of the graph
-    for node_edge in graphAlgo.graph.get_all_v().values():
-        src = n.get_key(node_edge)
-        src_pos = n.get_pos(node_edge)
-        for dest in graphAlgo.graph.all_out_edges_of_node(src):
-            dest_pos = n.get_pos(graphAlgo.graph.get_node(dest))
-            xSrc = src_pos[0]
-            ySrc = src_pos[1]
-            xDest = dest_pos[0]
-            yDest = dest_pos[1]
-            plt.plot([xSrc, xDest], [ySrc, yDest], color="white")
-    axes.set_facecolor('xkcd:black')
-    plt.tick_params(axis='x', which='both', bottom=False,
-                    top=False, labelbottom=False)
-    plt.tick_params(axis='y', which='both', right=False,
-                    left=False, labelleft=False)
-    for pos in ['right', 'top', 'bottom', 'left']:
-        plt.gca().spines[pos].set_visible(False)
-    l = axes.figure.subplotpars.left
-    r = axes.figure.subplotpars.right
-    t = axes.figure.subplotpars.top
-    b = axes.figure.subplotpars.bottom
-    figw = float(xMax) / (r - l)
-    figh = float((yMin) / (t - b) + 5)
-    axes.figure.set_size_inches(figw, figh)
-    mainWindow = FigureCanvasTkAgg(fig, master=frame_graph)
-    mainWindow.draw()
-    mainWindow.get_tk_widget().pack(side=TOP)
-    window.mainloop()
-    plt.show()
+    def clickCenterPoint(self):
+        print("we need to arrange this function after we wrote the center_point")
 
+    def clickShortestPath(self):
+        print("we need to arrange this function after we wrote the shortest_path")
 
-#################################### frame top of our window ###########################################################
+    def clickTsp(self):
+        print("we need to arrange this function after we wrote the TSP")
 
+    def clickAddEdge(self):
+        print("we need to arrange this function after we wrote the add_edge")
 
-######################## The functions that make the process after the user click the button ###########################
-def clickTsp():
-    print("we need to arrange this function after we wrote the TSP")
+    def clickAddNode(self):
+        print("we need to arrange this function after we wrote the add_node")
 
+    def clickRemoveNode(self):
+        print("we need to arrange this function after we wrote the remove_node")
 
-def clickShortestPath():
-    print("we need to arrange this function after we wrote the shortest_path")
+    def clickRemoveEdge(self):
+        print("we need to arrange this function after we wrote the remove_edge")
 
+    ########################################## menubar of our window ##################################################
+    def windowMenuBar(self):
 
-def clickCenterPoint():
-    print("we need to arrange this function after we wrote the center_point")
+        fileMenu = Menu(self.menuBar, tearoff=0)
+        fileMenu.add_command(label="New", command=self.new)
+        fileMenu.add_command(label="Load", command=self.load)
+        fileMenu.add_command(label="Save", command=self.save)
 
+        fileMenu.add_separator()
+        fileMenu.add_command(label="Exit", command=self.window.quit)
 
-def clickAddEdge():
-    print("we need to arrange this function after we wrote the add_edge")
+        self.menuBar.add_cascade(label="File", menu=fileMenu)
 
+        editMenu = Menu(self.menuBar, tearoff=0)
+        editMenu.add_command(label="Add Node", command=self.clickAddNode)
+        editMenu.add_command(label="Add Edge", command=self.clickAddEdge)
+        editMenu.add_command(label="Remove Node", command=self.clickRemoveNode)
+        editMenu.add_command(label="Remove Edge", command=self.clickRemoveEdge)
+        editMenu.add_command(label="Clear", command=self.clear)
 
-def clickAddNode():
-    print("we need to arrange this function after we wrote the add_node")
+        self.menuBar.add_cascade(label="Edit", menu=editMenu)
 
+        DataGraphMenu = Menu(self.menuBar, tearoff=0)
+        DataGraphMenu.add_command(label="Graph", command=self.Graph)
+        DataGraphMenu.add_command(label="Vertices", command=self.Vertices)
+        DataGraphMenu.add_command(label="Edges", command=self.Edges)
+        self.menuBar.add_cascade(label="Data Of Graph", menu=DataGraphMenu)
 
-def clickRemoveNode():
-    print("we need to arrange this function after we wrote the remove_node")
+        self.window.config(menu=self.menuBar)
 
+    #################################### buttons of our window ########################################################
+    def windowFrameButtons(self):
+        center_point = Button(self.frame_buttons,
+                              text="Center Point",
+                              command=self.clickCenterPoint,
+                              font=("Comic Sans", 25),
+                              width=10,
+                              fg="darkorange",
+                              bg="black",
+                              activeforeground="darkorange",
+                              activebackground="black"
+                              )
+        center_point.pack(side=LEFT)
 
-def clickRemoveEdge():
-    print("we need to arrange this function after we wrote the remove_edge")
+        shortest_path = Button(self.frame_buttons,
+                               text="Shortest Path",
+                               command=self.clickShortestPath,
+                               font=("Comic Sans", 25),
+                               width=10,
+                               fg="darkorange",
+                               bg="black",
+                               activeforeground="darkorange",
+                               activebackground="black"
+                               )
+        shortest_path.pack(side=LEFT)
 
-
-#################################### buttons of our window ###########################################################
-
-center_point = Button(frame_buttons,
-                      text="Center Point",
-                      command=clickCenterPoint,
-                      font=("Comic Sans", 25),
-                      width=10,
-                      fg="darkorange",
-                      bg="black",
-                      activeforeground="darkorange",
-                      activebackground="black"
-                      )
-
-shortest_path = Button(frame_buttons,
-                       text="Shortest Path",
-                       command=clickShortestPath,
-                       font=("Comic Sans", 25),
-                       width=10,
-                       fg="darkorange",
-                       bg="black",
-                       activeforeground="darkorange",
-                       activebackground="black"
-                       )
-
-tsp = Button(frame_buttons,
-             text="TSP",
-             command=clickTsp,
-             font=("Comic Sans", 25),
-             width=10,
-             fg="darkorange",
-             bg="black",
-             activeforeground="darkorange",
-             activebackground="black"
-             )
-
-add_node = Button(frame_buttons,
-                  text="Add Node",
-                  command=clickAddNode,
-                  font=("Comic Sans", 25),
-                  width=10,
-                  fg="darkorange",
-                  bg="black",
-                  activeforeground="darkorange",
-                  activebackground="black"
-                  )
-
-add_edge = Button(frame_buttons,
-                  text="Add Edge",
-                  command=clickAddEdge,
-                  font=("Comic Sans", 25),
-                  width=10,
-                  fg="darkorange",
-                  bg="black",
-                  activeforeground="darkorange",
-                  activebackground="black"
-                  )
-
-remove_node = Button(frame_buttons,
-                     text="Remove Node",
-                     command=clickRemoveNode,
+        tsp = Button(self.frame_buttons,
+                     text="TSP",
+                     command=self.clickTsp,
                      font=("Comic Sans", 25),
-                     width=15,
+                     width=10,
                      fg="darkorange",
                      bg="black",
                      activeforeground="darkorange",
                      activebackground="black"
                      )
+        tsp.pack(side=LEFT)
 
-remove_edge = Button(frame_buttons,
-                     text="Remove Edge",
-                     command=clickRemoveEdge,
-                     font=("Comic Sans", 25),
-                     width=15,
-                     fg="darkorange",
-                     bg="black",
-                     activeforeground="darkorange",
-                     activebackground="black"
-                     )
+        add_node = Button(self.frame_buttons,
+                          text="Add Node",
+                          command=self.clickAddNode,
+                          font=("Comic Sans", 25),
+                          width=10,
+                          fg="darkorange",
+                          bg="black",
+                          activeforeground="darkorange",
+                          activebackground="black"
+                          )
+        add_node.pack(side=LEFT)
 
-center_point.pack(side=LEFT)
-shortest_path.pack(side=LEFT)
-tsp.pack(side=LEFT)
-add_node.pack(side=LEFT)
-add_edge.pack(side=LEFT)
-remove_node.pack(side=RIGHT)
-remove_edge.pack(side=RIGHT)
+        add_edge = Button(self.frame_buttons,
+                          text="Add Edge",
+                          command=self.clickAddEdge,
+                          font=("Comic Sans", 25),
+                          width=10,
+                          fg="darkorange",
+                          bg="black",
+                          activeforeground="darkorange",
+                          activebackground="black"
+                          )
+        add_edge.pack(side=LEFT)
 
+        remove_node = Button(self.frame_buttons,
+                             text="Remove Node",
+                             command=self.clickRemoveNode,
+                             font=("Comic Sans", 25),
+                             width=15,
+                             fg="darkorange",
+                             bg="black",
+                             activeforeground="darkorange",
+                             activebackground="black"
+                             )
+        remove_node.pack(side=RIGHT)
 
-################################### tab control ########################################################################
-# tabControl = Notebook(window)
-# tabControl.pack(side=LEFT)
-# # make frame
-# leftFrame = Frame(tabControl,width=width_window-100,height=height_window-100)
-# leftFrame.pack(side=TOP)
-# # add to tab controll
-# tabControl.add(leftFrame, text="Frame 1")
-# # add seccond frame
-# rightFrame = Frame(tabControl,width=width_window-100,height=height_window-100)
-# rightFrame.pack(side=TOP)
-# tabControl.add(rightFrame, text="Frame 2")
-# tabControl.config(background="black")
+        remove_edge = Button(self.frame_buttons,
+                             text="Remove Edge",
+                             command=self.clickRemoveEdge,
+                             font=("Comic Sans", 25),
+                             width=15,
+                             fg="darkorange",
+                             bg="black",
+                             activeforeground="darkorange",
+                             activebackground="black"
+                             )
+        remove_edge.pack(side=RIGHT)
 
-################### The functions that make the process after the user click the menubar Options #######################
-def new():
-    pass
+    #################################### frame graph of our window########################################################
+    def windowFrameGraph(self):
+        fig, axes = plt.subplots()
+        xMax = -float('inf')
+        xMin = float('inf')
+        yMax = -float('inf')
+        yMin = float('inf')
+        for node in self.graphAlgo.graph.get_all_v().values():
+            pos_tmp = n.get_pos(node)
+            id_tmp = n.get_key(node)
+            if xMax < pos_tmp[0]:
+                xMax = pos_tmp[0]
+            if pos_tmp[0] < xMin:
+                xMin = pos_tmp[0]
+            if yMax < pos_tmp[1]:
+                yMax = pos_tmp[1]
+            if pos_tmp[1] < yMin:
+                yMin = pos_tmp[0]
+            axes.scatter(pos_tmp[0], pos_tmp[1], color="yellow", zorder=15)
+            axes.annotate(id_tmp, (pos_tmp[0] + 0.0001, pos_tmp[1] + 0.00015), color="orange",
+                          fontsize=15)  # draw the Nodes of the graph
+        for node_edge in self.graphAlgo.graph.get_all_v().values():
+            src = n.get_key(node_edge)
+            src_pos = n.get_pos(node_edge)
+            for dest in self.graphAlgo.graph.all_out_edges_of_node(src):
+                dest_pos = n.get_pos(self.graphAlgo.graph.get_node(dest))
+                xSrc = src_pos[0]
+                ySrc = src_pos[1]
+                xDest = dest_pos[0]
+                yDest = dest_pos[1]
+                plt.plot([xSrc, xDest], [ySrc, yDest], color="white")
+        axes.set_facecolor('xkcd:black')
+        plt.tick_params(axis='x', which='both', bottom=False,
+                        top=False, labelbottom=False)
+        plt.tick_params(axis='y', which='both', right=False,
+                        left=False, labelleft=False)
+        for pos in ['right', 'top', 'bottom', 'left']:
+            plt.gca().spines[pos].set_visible(False)
+        l = axes.figure.subplotpars.left
+        r = axes.figure.subplotpars.right
+        t = axes.figure.subplotpars.top
+        b = axes.figure.subplotpars.bottom
+        figw = float(xMax) / (r - l)
+        figh = float((yMin) / (t - b) + 5)
+        axes.figure.set_size_inches(figw, figh)
+        mainWindow = FigureCanvasTkAgg(fig, master=self.frame_graph)
+        mainWindow.draw()
+        mainWindow.get_tk_widget().pack(side=TOP)
+        self.window.mainloop()
 
+    ################################### new graph after click ########################################################################
+    def frameGraphAfterChange(self):
+        fig, ax = plt.subplots()
+        for node in self.graphAlgo.get_all_v().values():
+            pos_tmp = n.get_pos(node)
+            id_tmp = n.get_key(node)
+            ax.scatter(pos_tmp[0], pos_tmp[1], color="blue", zorder=10)
+            ax.annotate(id_tmp, (pos_tmp[0], pos_tmp[1]))  # draw the Nodes of the graph
+        for node_edge in self.graphAlgo.get_all_v().values():
+            src = n.get_key(node_edge)
+            src_pos = n.get_pos(node_edge)
+            for dest in self.graphAlgo.all_out_edges_of_node(src):
+                dest_pos = n.get_pos(self.graphAlgo.get_node(dest))
+                xSrc = src_pos[0]
+                ySrc = src_pos[1]
+                xDest = dest_pos[0]
+                yDest = dest_pos[1]
+                plt.plot([xSrc, xDest], [ySrc, yDest], color="black")
+        plt.title("Directed Graph")
+        plt.show()
 
-def load():
-    pass
+    ########################################### pyplotGraph #############################################################
 
+    ############################################# The end of frame #########################################################
 
-def save():
-    pass
-
-
-def clear():
-    pass
-
-
-def Vertices():
-    pass
-
-
-def Edges():
-    pass
-
-
-def Graph():
-    pass
-
-
-################################################### menubar ###########################################################
-
-menuBar = Menu(window)
-
-fileMenu = Menu(menuBar, tearoff=0)
-fileMenu.add_command(label="New", command=new)
-fileMenu.add_command(label="Load", command=load)
-fileMenu.add_command(label="Save", command=save)
-
-fileMenu.add_separator()
-fileMenu.add_command(label="Exit", command=window.quit)
-
-menuBar.add_cascade(label="File", menu=fileMenu)
-
-editMenu = Menu(menuBar, tearoff=0)
-editMenu.add_command(label="Add Node", command=add_node)
-editMenu.add_command(label="Add Edge", command=add_edge)
-editMenu.add_command(label="Remove Node", command=remove_node)
-editMenu.add_command(label="Remove Edge", command=remove_edge)
-editMenu.add_command(label="Clear", command=clear)
-
-menuBar.add_cascade(label="Edit", menu=editMenu)
-
-DataGraphMenu = Menu(menuBar, tearoff=0)
-DataGraphMenu.add_command(label="Graph", command=Graph)
-DataGraphMenu.add_command(label="Vertices", command=Vertices)
-DataGraphMenu.add_command(label="Edges", command=Edges)
-menuBar.add_cascade(label="Data Of Graph", menu=DataGraphMenu)
-
-window.config(menu=menuBar)
-
-########################################### pyplotGraph #############################################################
-
-
-############################################# The end of frame #########################################################
-
-# window.mainloop()
+    # window.mainloop()

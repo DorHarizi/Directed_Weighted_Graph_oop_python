@@ -8,7 +8,7 @@ import math
 from src.Graph_Interface.GraphAlgoInterface import GraphAlgoInterface
 from src.My_Graph.DiGraph import DiGraph
 from src.My_Graph.NodeData import NodeData as n
-from src.My_Graph.my_Frame import frameGraph
+from src.My_Graph.my_Frame import my_frame
 
 
 class GraphAlgo(GraphAlgoInterface, ABC):
@@ -248,22 +248,4 @@ class GraphAlgo(GraphAlgoInterface, ABC):
     """
 
     def plot_graph(self) -> None:
-        frameGraph(self)
-        # fig, ax = pt.subplots()
-        # for node in self.graph.get_all_v().values():
-        #     pos_tmp = n.get_pos(node)
-        #     id_tmp = n.get_key(node)
-        #     ax.scatter(pos_tmp[0], pos_tmp[1], color="blue", zorder=10)
-        #     ax.annotate(id_tmp, (pos_tmp[0], pos_tmp[1]))  # draw the Nodes of the graph
-        # for node_edge in self.graph.get_all_v().values():
-        #     src = n.get_key(node_edge)
-        #     src_pos = n.get_pos(node_edge)
-        #     for dest in self.graph.all_out_edges_of_node(src):
-        #         dest_pos = n.get_pos(self.graph.get_node(dest))
-        #         xSrc = src_pos[0]
-        #         ySrc = src_pos[1]
-        #         xDest = dest_pos[0]
-        #         yDest = dest_pos[1]
-        #         pt.plot([xSrc, xDest], [ySrc, yDest], color="black")
-        # pt.title("Directed Graph")
-        # pt.show()
+        my_frame(self)
