@@ -30,7 +30,7 @@
 
 
 ## uml :
-![image](https://user-images.githubusercontent.com/92825016/147459626-3b932f75-a56a-48b7-95c9-e204352a13e3.png)  
+![image](https://user-images.githubusercontent.com/92825016/147567818-6a292303-bff7-4511-95d3-11a71a2cc094.png)  
 
 
 ## GeaphAlgo - function:
