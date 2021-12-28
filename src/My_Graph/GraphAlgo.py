@@ -3,12 +3,12 @@ import json
 import sys
 from abc import ABC
 from typing import List
-from matplotlib import pyplot as pt
+import matplotlib.pyplot as plt
 import math
 from src.Graph_Interface.GraphAlgoInterface import GraphAlgoInterface
 from src.My_Graph.DiGraph import DiGraph
 from src.My_Graph.NodeData import NodeData as n
-from src.My_Graph.my_Frame import my_frame
+
 
 
 class GraphAlgo(GraphAlgoInterface, ABC):
@@ -248,4 +248,47 @@ class GraphAlgo(GraphAlgoInterface, ABC):
     """
 
     def plot_graph(self) -> None:
-        my_frame(self)
+        fig, axes = plt.subplots()
+        xMax = -float('inf')
+        xMin = float('inf')
+        yMax = -float('inf')
+        yMin = float('inf')
+        for node in self.graphAlgo.graph.get_all_v().values():
+            pos_tmp = n.get_pos(node)
+            id_tmp = n.get_key(node)
+            if xMax < pos_tmp[0]:
+                xMax = pos_tmp[0]
+            if pos_tmp[0] < xMin:
+                xMin = pos_tmp[0]
+            if yMax < pos_tmp[1]:
+                yMax = pos_tmp[1]
+            if pos_tmp[1] < yMin:
+                yMin = pos_tmp[0]
+            axes.scatter(pos_tmp[0], pos_tmp[1], color="yellow", zorder=15)
+            axes.annotate(id_tmp, (pos_tmp[0] + 0.0001, pos_tmp[1] + 0.00015), color="orange",
+                          fontsize=15)  # draw the Nodes of the graph
+        for node_edge in self.graphAlgo.graph.get_all_v().values():
+            src = n.get_key(node_edge)
+            src_pos = n.get_pos(node_edge)
+            for dest in self.graphAlgo.graph.all_out_edges_of_node(src):
+                dest_pos = n.get_pos(self.graphAlgo.graph.get_node(dest))
+                xSrc = src_pos[0]
+                ySrc = src_pos[1]
+                xDest = dest_pos[0]
+                yDest = dest_pos[1]
+                plt.plot([xSrc, xDest], [ySrc, yDest], color="white")
+        axes.set_facecolor('xkcd:black')
+        plt.tick_params(axis='x', which='both', bottom=False,
+                        top=False, labelbottom=False)
+        plt.tick_params(axis='y', which='both', right=False,
+                        left=False, labelleft=False)
+        for pos in ['right', 'top', 'bottom', 'left']:
+            plt.gca().spines[pos].set_visible(False)
+        l = axes.figure.subplotpars.left
+        r = axes.figure.subplotpars.right
+        t = axes.figure.subplotpars.top
+        b = axes.figure.subplotpars.bottom
+        figw = float(xMax) / (r - l)
+        figh = float((yMin) / (t - b) + 5)
+        axes.figure.set_size_inches(figw, figh)
+        plt.show()
