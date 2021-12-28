@@ -12,25 +12,18 @@ from src.My_Graph.GraphAlgo import GraphAlgo
 
 class TestGraphAlgo(TestCase):
     def test_get_graph(self):
-        g1_algo = GraphAlgo()
-        g1_algo.load_from_json("../data/1000Nodes.json")
+            g1_algo = GraphAlgo()
+            g1_algo.load_from_json("../data/A1.json")
+
+            A0 = g1_algo.get_graph()
+
+            self.assertEqual(A0, g1_algo.get_graph())
 
 
-        A0=g1_algo.get_graph()
-
-        self.assertEqual(A0,g1_algo.get_graph())
-
-        # self.fail()
-
-    def test_load_from_json(self):
-        self.fail()
-
-    def test_save_to_json(self):
-        self.fail()
 
     def test_shortest_path(self):
         g1_algo = GraphAlgo()
-        g1_algo.load_from_json("../data/100000Nodes.json")
+        g1_algo.load_from_json("../data/A0.json")
         A0=(4.3086815935816, [0, 1, 2, 3])
         A1_not=(inf, [])
         A1_0_4= 5.350731924801653, [0, 1, 2, 3, 4]
@@ -70,5 +63,4 @@ class TestGraphAlgo(TestCase):
 
         # self.fail()
 
-    def test_plot_graph(self):
-        self.fail()
+
