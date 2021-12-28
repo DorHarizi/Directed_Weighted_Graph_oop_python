@@ -46,7 +46,7 @@ def check0():
     print(g.list_of_Edges)
     g_algo = GraphAlgo(g)
     g1_algo = GraphAlgo()
-    g1_algo.load_from_json(r"C:\Users\dorha\PycharmProjects\Directed_Weighted_Graph_oop_python\src\data\A0.json")
+    g1_algo.load_from_json(r"C:\Users\dorha\PycharmProjects\Directed_Weighted_Graph_oop_python\src\data\A1.json")
     print(g1_algo.graph.get_all_v().values())
     print(g1_algo.shortest_path(0, 3))
     g1_algo.plot_graph()
