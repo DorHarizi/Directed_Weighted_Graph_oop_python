@@ -129,7 +129,3 @@ param file - file name of JSON file
 
 ### When you finish you can to save the graph or to exit from 'GUI'.
 ![image](https://user-images.githubusercontent.com/92825016/147473376-3886c907-eca3-4b27-a87f-70bcc1b06bba.png)
-
-
-
-**BarNahmias&DorHrizi**
