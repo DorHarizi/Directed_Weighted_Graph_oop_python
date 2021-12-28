@@ -84,7 +84,7 @@ param file - file name of JSON file
 - 10 Vertices 20 Edges : 0.002 sec
 - 1,000 Vertices 10,000 Edges: 0.046 sec
 - 10,000 Vertices 100,000 Edges: 0.446 sec
-- 100,000 Vertices 1,000,000 Edges: 11.654 sec
+- 100,000 Vertices 1,000,000 Edges: 9.615 sec
 
 **Running Algorithms:**
 
@@ -105,6 +105,8 @@ param file - file name of JSON file
 ## Performance comparison 
 -  java vs python check Performanc of getgraph func  for 10/1000/10000 nodes (in ms) :
 ![image](https://user-images.githubusercontent.com/92825016/147482950-224c6975-9e99-4c3f-813d-c31ffed29fa1.png)
+![image](https://user-images.githubusercontent.com/92825016/147550984-73bbffcd-6115-4bb5-916f-17d4a075bfe1.png)
+
 
 
 ## GUI - graphic interface :
