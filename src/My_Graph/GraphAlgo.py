@@ -11,7 +11,6 @@ from src.My_Graph.NodeData import NodeData as n
 
 
 
-n
 
 
 
@@ -266,7 +265,32 @@ class GraphAlgo(GraphAlgoInterface, ABC):
         if len(path) >= len(node_lst):
             return (path, weight)
 
-    """
+    def centerPoint(self) -> (int, float):
+        mincenter = sys.maxsize
+        graph = self.graph
+        lst_graph = graph.get_all_v()
+        center = -1
+        for key in lst_graph.keys():
+
+            biggestDistance = 0
+            for k in lst_graph.keys():
+
+                id1 = key
+                id2 = k
+
+                if id1 == id2:
+                    continue
+
+                weight = self.shortest_path(id1, id2)[0]
+                if weight > biggestDistance:
+                    biggestDistance = weight
+
+            if biggestDistance < mincenter:
+                mincenter = biggestDistance
+                node_center = key
+
+        return node_center, mincenter
+
 
     def plot_graph(self) -> None:
         fig, axes = plt.subplots()
