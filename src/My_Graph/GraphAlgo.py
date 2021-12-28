@@ -10,10 +10,6 @@ from src.My_Graph.DiGraph import DiGraph
 from src.My_Graph.NodeData import NodeData as n
 
 
-
-
-
-
 class GraphAlgo(GraphAlgoInterface, ABC):
 
     def __init__(self, graph: DiGraph = None):
@@ -125,7 +121,6 @@ class GraphAlgo(GraphAlgoInterface, ABC):
         if id1 == id2:
             return (0, [id1])
 
-
         if id1 not in nodes:
             return ans
         if id2 not in nodes:
@@ -152,9 +147,6 @@ class GraphAlgo(GraphAlgoInterface, ABC):
                     if tmp_node not in visited:
                         heapq.heappush(queue, (weight[tmp_node], tmp_node))
 
-
-
-
         if id2 not in path:
             return ans
 
@@ -169,7 +161,6 @@ class GraphAlgo(GraphAlgoInterface, ABC):
         final_list.append(id1)
         final_list.reverse()
         return (final_distance, final_list)
-
 
     def TSPT(self, node_lst: List[int]) -> (List[int], float):
         start = node_lst[0]
@@ -198,10 +189,9 @@ class GraphAlgo(GraphAlgoInterface, ABC):
 
                     if visit[edge] is False:
                         if self.shortest_path(n.get_key(city), edge)[0] < mini and edge != n.get_key(city):
-
                             mini = self.shortest_path(n.get_key(city), edge)[0]
-                            getnext=node_lst[edge]
-                            getedge=edge
+                            getnext = node_lst[edge]
+                            getedge = edge
 
                 next = getnext
 
@@ -214,10 +204,9 @@ class GraphAlgo(GraphAlgoInterface, ABC):
                     citys.append(next)
 
         if len(path) < len(node_lst):
-            return -1 ,path
+            return -1, path
         if len(path) >= len(node_lst):
             return (path, weight)
-
 
     def TSP(self, node_lst: List[int]) -> (List[int], float):
         start = node_lst[0]
@@ -291,14 +280,13 @@ class GraphAlgo(GraphAlgoInterface, ABC):
 
         return node_center, mincenter
 
-
     def plot_graph(self) -> None:
         fig, axes = plt.subplots()
         xMax = -float('inf')
         xMin = float('inf')
         yMax = -float('inf')
         yMin = float('inf')
-        for node in self.graphAlgo.graph.get_all_v().values():
+        for node in self.graph.get_all_v().values():
             pos_tmp = n.get_pos(node)
             id_tmp = n.get_key(node)
             if xMax < pos_tmp[0]:
@@ -312,11 +300,11 @@ class GraphAlgo(GraphAlgoInterface, ABC):
             axes.scatter(pos_tmp[0], pos_tmp[1], color="yellow", zorder=15)
             axes.annotate(id_tmp, (pos_tmp[0] + 0.0001, pos_tmp[1] + 0.00015), color="orange",
                           fontsize=15)  # draw the Nodes of the graph
-        for node_edge in self.graphAlgo.graph.get_all_v().values():
+        for node_edge in self.graph.get_all_v().values():
             src = n.get_key(node_edge)
             src_pos = n.get_pos(node_edge)
-            for dest in self.graphAlgo.graph.all_out_edges_of_node(src):
-                dest_pos = n.get_pos(self.graphAlgo.graph.get_node(dest))
+            for dest in self.graph.all_out_edges_of_node(src):
+                dest_pos = n.get_pos(self.graph.get_node(dest))
                 xSrc = src_pos[0]
                 ySrc = src_pos[1]
                 xDest = dest_pos[0]
