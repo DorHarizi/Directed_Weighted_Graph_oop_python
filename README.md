@@ -110,12 +110,24 @@ param file - file name of JSON file
 
 
 ## GUI - graphic interface :
-When you open 'GUI' from Main class will open panel thet creat the graph from the json file thet you laod:
-![image](https://user-images.githubusercontent.com/92825016/147473194-ee0c4908-db46-4f1f-a75d-68ee6f08a048.png)
+### When you open 'GUI' from Main class will open panel thet creat the graph from the json file thet you laod:
+![image](https://user-images.githubusercontent.com/92825016/147589337-0bbf9e4c-e997-4c37-aa0f-7973c5424a76.png)
 
-you can chose to laod other graph or to operate the functuion(from GraphAlgo) on the graph.
+### you can chose to operate the functuion(from GraphAlgo) on the graph from menu bar.
+![image](https://user-images.githubusercontent.com/92825016/147589388-adda5f37-62ad-4201-8b83-b50e9023cd39.png)
 
-When you finish you can to save the graph or to exit from 'GUI'.
+#### you can chose to laod other graph or to save the graph after you  operate the functuion - main menu .
+![image](https://user-images.githubusercontent.com/92825016/147589415-415c1557-fa31-4d87-a333-e236294c924c.png)
+
+![image](https://user-images.githubusercontent.com/92825016/147589439-0d0d8b65-d136-452f-9f64-33f5daca8aef.png)
+
+### you can chose to operate the functuion(from DiGraph) on the graph from menu bar. 
+![image](https://user-images.githubusercontent.com/92825016/147589465-dae6b9ce-e00a-467d-b23a-8adc86abe7ee.png)
+
+### you can get graph data's , edges and nodes  .
+![image](https://user-images.githubusercontent.com/92825016/147589494-9ccd3ea8-bbd0-4cc1-b27c-f1bafab3932d.png)
+
+### When you finish you can to save the graph or to exit from 'GUI'.
 ![image](https://user-images.githubusercontent.com/92825016/147473376-3886c907-eca3-4b27-a87f-70bcc1b06bba.png)
 
 
